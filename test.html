@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pointer made</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #111111;
+            --card: #161616;
+            --border: #252525;
+            --text: #e0e0e0;
+            --sub: #777777;
+            --accent: #4da8da;
+            --accent-hover: #3d94c4;
+            --green: #5cb87a;
+            --green-bg: rgba(92, 184, 122, 0.1);
+            --red: #e05555;
+            --gold: #c9a94e;
+            --gold-bg: rgba(201, 169, 78, 0.15);
+            --silver: #b0b0b0;
+            --silver-bg: rgba(176, 176, 176, 0.1);
+            --bronze: #b8764a;
+            --bronze-bg: rgba(184, 118, 74, 0.1);
+            --copy: #3b7dd8;
+            --copy-hover: #4d8ee6;
+            --edit: #3b7dd8;
+            --new: #4da8da;
+            --up: #5cb87a;
+            --down: #e05555;
+            --tag-bg: #1e2230;
+            --tag-text: #89b4fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app {
+            width: 750px;
+            min-height: 100vh;
+            background: var(--bg);
+            position: relative;
+        }
+
+        .header {
+            padding: 22px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(12px);
+            z-index: 50;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-logo {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(77, 168, 218, 0.6);
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            color: #fff;
+        }
+
+        .header-title span {
+            color: var(--accent);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .points-badge {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 7px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .points-badge strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--accent);
+        }
+
+        .avatar:hover {
+            border-color: var(--accent);
+            background: #1a1a1a;
+        }
+
+        .tabs {
+            display: flex;
+            padding: 0 28px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+            position: sticky;
+            top: 77px;
+            z-index: 40;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--sub);
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .search-wrapper {
+            padding: 12px 28px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 9px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            letter-spacing: 0.3px;
+            transition: border 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+        }
+
+        .search-input::placeholder {
+            color: var(--sub);
+        }
+
+        .content {
+            padding: 14px 28px 120px;
+            min-height: calc(100vh - 200px);
+        }
+
+        .list-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .list-header-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--sub);
+            font-weight: 600;
+        }
+
+        .legacy-date {
+            font-size: 10px;
+            color: var(--sub);
+            letter-spacing: 0.3px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--sub);
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .level-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .level-card {
+            background: var(--card);
+            border: 1px solid transparent;
+            border-bottom: 1px solid var(--border);
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.15s;
+            border-radius: 0;
+        }
+
+        .level-card:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .level-card:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        .level-card:only-child {
+            border-radius: 8px;
+        }
+
+        .level-card:hover {
+            background: #1a1a1a;
+            border-color: var(--border);
+        }
+
+        .level-card.top-1 {
+            border-left: 3px solid var(--gold);
+        }
+
+        .level-card.top-2 {
+            border-left: 3px solid var(--silver);
+        }
+
+        .level-card.top-3 {
+            border-left: 3px solid var(--bronze);
+        }
+
+        .level-rank {
+            font-size: 12px;
+            color: var(--sub);
+            font-weight: 600;
+            min-width: 36px;
+            letter-spacing: 0.5px;
+        }
+
+        .level-card.top-1 .level-rank {
+            color: var(--gold);
+        }
+
+        .level-card.top-2 .level-rank {
+            color: var(--silver);
+        }
+
+        .level-card.top-3 .level-rank {
+            color: var(--bronze);
+        }
+
+        .level-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .level-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .level-name {
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.2px;
+        }
+
+        .legacy-badge {
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .legacy-badge.legacy-1 {
+            background: var(--gold-bg);
+            color: var(--gold);
+        }
+
+        .legacy-badge.legacy-2 {
+            background: var(--silver-bg);
+            color: var(--silver);
+        }
+
+        .legacy-badge.legacy-3 {
+            background: var(--bronze-bg);
+            color: var(--bronze);
+        }
+
+        .history-badge {
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .history-badge.up {
+            background: rgba(92, 184, 122, 0.15);
+            color: var(--up);
+        }
+
+        .history-badge.down {
+            background: rgba(224, 85, 85, 0.15);
+            color: var(--down);
+        }
+
+        .history-badge.new {
+            background: rgba(77, 168, 218, 0.15);
+            color: var(--new);
+        }
+
+        .level-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .level-tag {
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 3px;
+            letter-spacing: 0.3px;
+        }
+
+        .level-details {
+            font-size: 11px;
+            color: var(--sub);
+            margin-top: 3px;
+            letter-spacing: 0.2px;
+        }
+
+        .level-details strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .level-difficulty-bar {
+            height: 2px;
+            background: var(--border);
+            border-radius: 1px;
+            margin-top: 6px;
+        }
+
+        .level-difficulty-fill {
+            height: 100%;
+            border-radius: 1px;
+            background: var(--accent);
+        }
+
+        .level-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .edit-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--edit);
+        }
+
+        .edit-btn:hover {
+            background: rgba(59, 125, 216, 0.15);
+            border-color: var(--edit);
+        }
+
+        .edit-btn svg {
+            width: 13px;
+            height: 13px;
+        }
+
+        .complete-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: var(--green);
+        }
+
+        .complete-btn:hover:not(.completed) {
+            background: var(--green-bg);
+            border-color: var(--green);
+        }
+
+        .complete-btn.completed {
+            background: var(--green-bg);
+            border-color: rgba(92, 184, 122, 0.3);
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--sub);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+
+        .delete-btn:hover {
+            color: var(--red);
+            border-color: rgba(224, 85, 85, 0.3);
+        }
+
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 750px;
+            padding: 16px 28px;
+            background: linear-gradient(transparent, rgba(10, 10, 10, 0.95) 30%, rgba(10, 10, 10, 1) 100%);
+            display: flex;
+            gap: 10px;
+            z-index: 40;
+        }
+
+        .add-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: var(--accent);
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .add-btn:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 0 20px rgba(77, 168, 218, 0.3);
+        }
+
+        .copy-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            background: var(--copy);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .copy-btn:hover {
+            background: var(--copy-hover);
+            box-shadow: 0 0 20px rgba(59, 125, 216, 0.3);
+        }
+
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .copy-tooltip {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .copy-tooltip.show {
+            opacity: 1;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 26px 28px;
+            width: 420px;
+        }
+
+        .modal h2 {
+            font-size: 16px;
+            margin-bottom: 18px;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .modal label {
+            display: block;
+            font-size: 11px;
+            color: var(--sub);
+            margin-bottom: 4px;
+            margin-top: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 500;
+        }
+
+        .modal input[type="text"],
+        .modal input[type="number"] {
+            width: 100%;
+            padding: 9px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .modal input:focus {
+            border-color: var(--accent);
+        }
+
+        .modal input[type="range"] {
+            width: 100%;
+            margin-top: 4px;
+            accent-color: var(--accent);
+            height: 4px;
+        }
+
+        .range-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .range-row input[type="range"] {
+            flex: 1;
+        }
+
+        .range-value {
+            font-weight: 500;
+            color: var(--accent);
+            font-size: 13px;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .modal-hint {
+            font-size: 10px;
+            color: var(--sub);
+            margin-top: 3px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 22px;
+            justify-content: flex-end;
+        }
+
+        .modal-buttons button {
+            padding: 9px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel {
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-cancel:hover {
+            background: #1a1a1a;
+        }
+
+        .btn-ok {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-ok:hover {
+            background: var(--accent-hover);
+        }
+
+        .tag-input-wrapper {
+            position: relative;
+        }
+
+        .tag-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 0 0 6px 6px;
+            max-height: 140px;
+            overflow-y: auto;
+            z-index: 101;
+            display: none;
+        }
+
+        .tag-suggestions.show {
+            display: block;
+        }
+
+        .tag-suggestion-item {
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text);
+            transition: background 0.1s;
+        }
+
+        .tag-suggestion-item:hover {
+            background: var(--card);
+            color: var(--accent);
+        }
+
+        .profile-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .profile-page.active {
+            display: block;
+        }
+
+        .profile-container {
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .back-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 0 auto 16px;
+        }
+
+        .profile-name-input {
+            display: block;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto 4px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            color: #fff;
+            font-size: 20px;
+            font-weight: 500;
+            padding: 6px 0;
+            font-family: inherit;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .profile-name-input:focus {
+            border-bottom-color: var(--accent);
+        }
+
+        .profile-subtitle {
+            text-align: center;
+            color: var(--sub);
+            font-size: 12px;
+            margin-bottom: 24px;
+        }
+
+        .profile-stat {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-stat-label {
+            color: var(--sub);
+            font-size: 12px;
+        }
+
+        .profile-stat-value {
+            font-weight: 500;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .profile-stat-value.accent {
+            color: var(--accent);
+        }
+
+        .profile-section {
+            margin-top: 22px;
+        }
+
+        .profile-section h3 {
+            font-size: 11px;
+            color: var(--sub);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .profile-completed-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 10px 14px;
+            margin-bottom: 2px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-completed-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            flex-shrink: 0;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .profile-action-btn {
+            padding: 9px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 12px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .profile-action-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .profile-action-btn.export-btn:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .profile-action-btn.import-btn:hover {
+            border-color: var(--copy);
+            color: var(--copy);
+        }
+
+        .profile-action-btn.copy-profile-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+        }
+
+        .profile-action-btn.copy-profile-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .radar-container {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .radar-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--sub);
+        }
+
+        .radar-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .radar-legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .radar-legend-dot.overall {
+            background: var(--accent);
+            box-shadow: 0 0 6px rgba(77, 168, 218, 0.5);
+        }
+
+        .ach-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+        }
+
+        .ach-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10px;
+            letter-spacing: 0.3px;
+        }
+
+        .ach-card.earned {
+            opacity: 1;
+        }
+
+        .ach-card.locked {
+            opacity: 0.4;
+        }
+
+        .ach-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .ach-card.earned .ach-icon {
+            background: var(--green-bg);
+            color: var(--green);
+        }
+
+        .ach-card.locked .ach-icon {
+            background: var(--border);
+            color: var(--sub);
+        }
+
+        .ach-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ach-name {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .ach-card.locked .ach-name {
+            color: var(--sub);
+        }
+
+        .ach-desc {
+            color: var(--sub);
+            font-size: 9px;
+            margin-top: 1px;
+        }
+
+        .ach-count {
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app" id="app">
+        <div class="header">
+            <div class="header-left">
+                <div class="header-logo"></div>
+                <div class="header-title">Pointer <span>made</span></div>
+            </div>
+            <div class="header-right">
+                <div class="points-badge"><strong id="pointsDisplay">0.00</strong> points</div>
+                <button class="avatar" id="avatarBtn">U</button>
+            </div>
+        </div>
+        <div class="tabs" id="tabs">
+            <button class="tab-btn active" data-tab="list">List</button>
+            <button class="tab-btn" data-tab="legacy">Legacy List</button>
+        </div>
+        <div class="search-wrapper">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search by name or tag...">
+        </div>
+        <div class="content" id="content">
+            <div class="list-header">
+                <span class="list-header-label" id="listHeaderLabel">Levels</span>
+                <span class="list-header-label" style="font-size:10px;" id="levelCount">0</span>
+            </div>
+            <div class="legacy-date" id="legacyDate" style="display:none;"></div>
+            <div class="empty-state" id="emptyState">List is empty</div>
+            <div class="level-list" id="levelList"></div>
+        </div>
+    </div>
+
+    <div class="bottom-bar" id="bottomBar">
+        <button class="add-btn" id="addBtn">+</button>
+        <button class="copy-btn" id="copyBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span class="copy-tooltip" id="copyTooltip">Copied</span>
+        </button>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <h2 id="modalTitle">New Level</h2>
+            <label>Name</label>
+            <input type="text" id="levelNameInput" placeholder="Enter name">
+            <label>Difficulty (<span id="rangeDisplay">50</span>)</label>
+            <div class="range-row">
+                <input type="range" id="levelDifficultyInput" min="0" max="100" value="50">
+                <span class="range-value" id="rangeValue">50</span>
+            </div>
+            <label>Points</label>
+            <input type="number" id="levelNumberInput" placeholder="0" min="0" step="0.01">
+            <label>Tags</label>
+            <div class="tag-input-wrapper">
+                <input type="text" id="levelTagsInput" placeholder="e.g. demon, hard" autocomplete="off">
+                <div class="tag-suggestions" id="tagSuggestions"></div>
+            </div>
+            <p class="modal-hint">Separate tags with commas</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel" id="modalCancel">Cancel</button>
+                <button class="btn-ok" id="modalOk">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-page" id="profilePage">
+        <div class="profile-container">
+            <div class="profile-header">
+                <button class="back-btn" id="backBtn">← Back</button>
+                <div class="points-badge"><strong id="profilePoints">0.00</strong> points</div>
+            </div>
+            <div class="profile-avatar" id="profileAvatar">U</div>
+            <input type="text" class="profile-name-input" id="profileNameInput" value="Uruman" maxlength="20">
+            <p class="profile-subtitle">Pointer made member</p>
+            <div class="profile-stat">
+                <span class="profile-stat-label">Points</span>
+                <span class="profile-stat-value accent" id="profileTotalPoints">0.00</span>
+            </div>
+            <div class="profile-stat">
+                <span class="profile-stat-label">Completed</span>
+                <span class="profile-stat-value" id="profileCompletedCount">0</span>
+            </div>
+            <div class="profile-stat">
+                <span class="profile-stat-label">Achievements</span>
+                <span class="profile-stat-value ach-count" id="profileAchCount">0/95</span>
+            </div>
+            <div class="profile-section">
+                <h3>Skill Set</h3>
+                <div class="radar-container" id="radarContainer">
+                    <canvas id="radarCanvas" width="280" height="280"></canvas>
+                    <div class="radar-legend" id="radarLegend"></div>
+                </div>
+                <div id="radarEmpty" style="display:none;text-align:center;padding:20px;color:var(--sub);font-size:12px;">No completed levels yet</div>
+            </div>
+            <div class="profile-section">
+                <h3>Achievements</h3>
+                <div class="ach-grid" id="achGrid"></div>
+            </div>
+            <div class="profile-section">
+                <h3>Completed Levels</h3>
+                <div id="profileCompletedList"></div>
+            </div>
+            <div class="profile-actions">
+                <button class="profile-action-btn export-btn" id="exportBtn">Export Data</button>
+                <button class="profile-action-btn import-btn" id="importBtn">Import Data</button>
+                <button class="profile-action-btn copy-profile-btn" id="copyProfileBtn">Copy Profile</button>
+                <input type="file" id="importFileInput" accept=".json">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== STORAGE KEYS ======
+        const SK = {
+            levels: 'pointer_made_levels_v3',
+            points: 'pointer_made_points_v3',
+            completed: 'pointer_made_completed_v3',
+            name: 'pointer_made_name_v3',
+            legacy: 'pointer_made_legacy_v3',
+            legacyDate: 'pointer_made_legacy_date_v3',
+            history: 'pointer_made_history_v3',
+            prevSorted: 'pointer_made_prev_sorted_v3',
+            allTags: 'pointer_made_tags_v3',
+            levelTags: 'pointer_made_level_tags_v3',
+            achievements: 'pointer_made_achievements_v3',
+            achStats: 'pointer_made_ach_stats_v3',
+            migrated: 'pointer_made_migrated_to_v3'
+        };
+
+        // ====== MIGRATION ======
+        if (localStorage.getItem(SK.migrated) !== 'true') {
+            ['levels', 'points', 'completed', 'name'].forEach(k => {
+                const old = localStorage.getItem('pointer_made_' + k + '_v2');
+                if (old !== null) localStorage.setItem(SK[k], old);
+            });
+            localStorage.setItem(SK.migrated, 'true');
+        }
+
+        // ====== DATA ======
+        let levels = JSON.parse(localStorage.getItem(SK.levels) || '[]');
+        let totalPoints = parseFloat(localStorage.getItem(SK.points) || '0');
+        let completedIds = JSON.parse(localStorage.getItem(SK.completed) || '[]');
+        let profileName = localStorage.getItem(SK.name) || 'Uruman';
+        let legacyLevels = JSON.parse(localStorage.getItem(SK.legacy) || '[]');
+        let legacyDate = localStorage.getItem(SK.legacyDate) || '';
+        let historyLog = JSON.parse(localStorage.getItem(SK.history) || '[]');
+        let prevSortedIds = JSON.parse(localStorage.getItem(SK.prevSorted) || '[]');
+        let allTags = JSON.parse(localStorage.getItem(SK.allTags) || '[]');
+        let levelTags = JSON.parse(localStorage.getItem(SK.levelTags) || '{}');
+        let earnedAchievements = JSON.parse(localStorage.getItem(SK.achievements) || '[]');
+        let achStats = JSON.parse(localStorage.getItem(SK.achStats) || '{}');
+
+        function saveAll() {
+            localStorage.setItem(SK.levels, JSON.stringify(levels));
+            localStorage.setItem(SK.points, totalPoints.toFixed(6));
+            localStorage.setItem(SK.completed, JSON.stringify(completedIds));
+            localStorage.setItem(SK.name, profileName);
+            localStorage.setItem(SK.legacy, JSON.stringify(legacyLevels));
+            localStorage.setItem(SK.legacyDate, legacyDate);
+            localStorage.setItem(SK.history, JSON.stringify(historyLog));
+            localStorage.setItem(SK.prevSorted, JSON.stringify(prevSortedIds));
+            localStorage.setItem(SK.allTags, JSON.stringify(allTags));
+            localStorage.setItem(SK.levelTags, JSON.stringify(levelTags));
+            localStorage.setItem(SK.achievements, JSON.stringify(earnedAchievements));
+            localStorage.setItem(SK.achStats, JSON.stringify(achStats));
+        }
+
+        function formatPoints(n) { return parseFloat(n).toFixed(2); }
+        function sortLevels(a, b) { if (b.difficulty !== a.difficulty) return b.difficulty - a.difficulty; return b.number - a.number; }
+        function getSorted(source) { return [...source].sort(sortLevels); }
+        function getTags(id) { return levelTags[id] || []; }
+        function setTags(id, tags) { const c = tags.map(t => t.trim().toLowerCase()).filter(t => t); levelTags[id] = c; c.forEach(t => { if (!allTags.includes(t)) allTags.push(t); }); saveAll(); }
+        function removeTags(id) { delete levelTags[id]; saveAll(); }
+
+        // ====== LEGACY ======
+        function checkLegacy() {
+            if (!legacyDate) { saveLegacy(); return; }
+            if ((new Date() - new Date(legacyDate)) / 86400000 >= 20) saveLegacy();
+        }
+        function saveLegacy() {
+            if (levels.length === 0) { legacyLevels = []; legacyDate = ''; }
+            else {
+                legacyLevels = JSON.parse(JSON.stringify(getSorted(levels)));
+                legacyDate = new Date().toISOString();
+                if (!achStats.legacyCount) achStats.legacyCount = 0;
+                achStats.legacyCount++;
+                const s1 = getSorted(legacyLevels);
+                if (s1.length > 0) {
+                    const prev = achStats.prevLegacyTop1;
+                    if (prev && prev === s1[0].id) achStats.sameTop1 = (achStats.sameTop1 || 0) + 1;
+                    else if (prev && (achStats.sameTop1 || 0) > 0 && s1[0].id === achStats.comebackId) achStats.comeback = true;
+                    achStats.prevLegacyTop1 = s1[0].id;
+                    achStats.comebackId = prev;
+                }
+            }
+            saveAll();
+            checkAchievements();
+        }
+
+        // ====== HISTORY ======
+        function cleanHistory() {
+            const d = Date.now() - 86400000;
+            historyLog = historyLog.filter(h => h.time > d).slice(0, 50);
+            saveAll();
+        }
+        function addHistory(id, type, pos) {
+            cleanHistory();
+            historyLog.unshift({ levelId: id, type, positions: pos, time: Date.now() });
+            if (historyLog.length > 50) historyLog.pop();
+            saveAll();
+        }
+        function getHistory(id) { return historyLog.find(h => h.levelId === id) || null; }
+        function computeHistory(newIds) {
+            if (!prevSortedIds.length) { prevSortedIds = [...newIds]; saveAll(); return; }
+            const om = {}, nm = {};
+            prevSortedIds.forEach((id, i) => om[id] = i);
+            newIds.forEach((id, i) => nm[id] = i);
+            const oi = new Set(prevSortedIds), ni = new Set(newIds);
+            newIds.forEach(id => { if (!oi.has(id)) addHistory(id, 'new', 0); });
+            prevSortedIds.forEach(id => { if (!ni.has(id)) addHistory(id, 'removed', 0); });
+            newIds.forEach(id => {
+                if (oi.has(id) && ni.has(id)) {
+                    const d = om[id] - nm[id];
+                    if (d) addHistory(id, d > 0 ? 'up' : 'down', Math.abs(d));
+                }
+            });
+            prevSortedIds = [...newIds];
+            saveAll();
+        }
+
+        // ====== ACHIEVEMENTS ======
+        const ACHIEVEMENTS = [
+            { id: 1, name: "First Step", desc: "Add your first level", check: () => levels.length >= 1 },
+            { id: 2, name: "Getting Started", desc: "Add 5 levels", check: () => levels.length >= 5 },
+            { id: 3, name: "Collector", desc: "Add 10 levels", check: () => levels.length >= 10 },
+            { id: 4, name: "Hoarder", desc: "Add 25 levels", check: () => levels.length >= 25 },
+            { id: 5, name: "Archivist", desc: "Add 50 levels", check: () => levels.length >= 50 },
+            { id: 6, name: "Centurion", desc: "Add 100 levels", check: () => levels.length >= 100 },
+            { id: 7, name: "First Blood", desc: "Complete your first level", check: () => completedIds.length >= 1 },
+            { id: 8, name: "On The Roll", desc: "Complete 5 levels", check: () => completedIds.length >= 5 },
+            { id: 9, name: "Demon Slayer", desc: "Complete 10 levels", check: () => completedIds.length >= 10 },
+            { id: 10, name: "Exterminator", desc: "Complete 25 levels", check: () => completedIds.length >= 25 },
+            { id: 11, name: "Massacre", desc: "Complete 50 levels", check: () => completedIds.length >= 50 },
+            { id: 12, name: "Genocide", desc: "Complete 100 levels", check: () => completedIds.length >= 100 },
+            { id: 13, name: "Perfectionist", desc: "Complete a level with 100 difficulty", check: () => levels.filter(l => completedIds.includes(l.id) && l.difficulty === 100).length > 0 },
+            { id: 14, name: "Halfway There", desc: "Complete a level with 50+ difficulty", check: () => levels.filter(l => completedIds.includes(l.id) && l.difficulty >= 50).length > 0 },
+            { id: 15, name: "Warming Up", desc: "Complete a level with 25+ difficulty", check: () => levels.filter(l => completedIds.includes(l.id) && l.difficulty >= 25).length > 0 },
+            { id: 16, name: "Triple Kill", desc: "Complete 3 levels in one day", check: () => { const g = {}; completedIds.forEach(id => { const d = new Date(achStats.completedDates?.[id] || 0).toDateString(); g[d] = (g[d] || 0) + 1; }); return Object.values(g).some(v => v >= 3); } },
+            { id: 17, name: "On Fire", desc: "Complete 5 levels in one day", check: () => { const g = {}; completedIds.forEach(id => { const d = new Date(achStats.completedDates?.[id] || 0).toDateString(); g[d] = (g[d] || 0) + 1; }); return Object.values(g).some(v => v >= 5); } },
+            { id: 18, name: "Unstoppable", desc: "Complete 10 levels in one day", check: () => { const g = {}; completedIds.forEach(id => { const d = new Date(achStats.completedDates?.[id] || 0).toDateString(); g[d] = (g[d] || 0) + 1; }); return Object.values(g).some(v => v >= 10); } },
+            { id: 19, name: "Marathon", desc: "Complete 20 levels in one day", check: () => { const g = {}; completedIds.forEach(id => { const d = new Date(achStats.completedDates?.[id] || 0).toDateString(); g[d] = (g[d] || 0) + 1; }); return Object.values(g).some(v => v >= 20); } },
+            { id: 20, name: "Insanity", desc: "Complete 50 levels in one day", check: () => { const g = {}; completedIds.forEach(id => { const d = new Date(achStats.completedDates?.[id] || 0).toDateString(); g[d] = (g[d] || 0) + 1; }); return Object.values(g).some(v => v >= 50); } },
+            { id: 21, name: "Night Owl", desc: "Complete a level between 00:00 and 05:00", check: () => { const c = achStats.completedDates || {}; return Object.values(c).some(d => { const h = new Date(d).getHours(); return h >= 0 && h < 5; }); } },
+            { id: 22, name: "Early Bird", desc: "Complete a level between 05:00 and 08:00", check: () => { const c = achStats.completedDates || {}; return Object.values(c).some(d => { const h = new Date(d).getHours(); return h >= 5 && h < 8; }); } },
+            { id: 23, name: "7 Day Streak", desc: "Complete at least 1 level every day for 7 days", check: () => checkStreak(7) },
+            { id: 24, name: "30 Day Streak", desc: "Complete at least 1 level every day for 30 days", check: () => checkStreak(30) },
+            { id: 25, name: "100 Day Streak", desc: "Complete at least 1 level every day for 100 days", check: () => checkStreak(100) },
+            { id: 26, name: "Top 10 Finisher", desc: "Have a level in your top 10", check: () => levels.length > 0 },
+            { id: 27, name: "Top 5 Contender", desc: "Have a level in your top 5", check: () => levels.length >= 5 },
+            { id: 28, name: "Podium", desc: "Have a level in your top 3", check: () => levels.length >= 3 },
+            { id: 29, name: "Runner Up", desc: "Have a level at #2", check: () => levels.length >= 2 },
+            { id: 30, name: "King of the Hill", desc: "Have a level at #1", check: () => levels.length >= 1 },
+            { id: 31, name: "Difficulty Spike", desc: "Add a level with 80+ difficulty", check: () => levels.some(l => l.difficulty >= 80) },
+            { id: 32, name: "Extreme", desc: "Add a level with 90+ difficulty", check: () => levels.some(l => l.difficulty >= 90) },
+            { id: 33, name: "Impossible", desc: "Add a level with 95+ difficulty", check: () => levels.some(l => l.difficulty >= 95) },
+            { id: 34, name: "The Pinnacle", desc: "Add a level with 100 difficulty", check: () => levels.some(l => l.difficulty === 100) },
+            { id: 35, name: "I Fear Nothing", desc: "Complete a 90+ difficulty level", check: () => levels.filter(l => completedIds.includes(l.id) && l.difficulty >= 90).length > 0 },
+            { id: 36, name: "Nightmare Conqueror", desc: "Complete a 95+ difficulty level", check: () => levels.filter(l => completedIds.includes(l.id) && l.difficulty >= 95).length > 0 },
+            { id: 37, name: "Godslayer", desc: "Complete a 100 difficulty level", check: () => levels.filter(l => completedIds.includes(l.id) && l.difficulty === 100).length > 0 },
+            { id: 38, name: "Difficulty Curve", desc: "Levels with 10+ different difficulty values", check: () => new Set(levels.map(l => l.difficulty)).size >= 10 },
+            { id: 39, name: "Smooth Spread", desc: "Levels with 25+ different difficulty values", check: () => new Set(levels.map(l => l.difficulty)).size >= 25 },
+            { id: 40, name: "Full Spectrum", desc: "Difficulty from 0 to 100", check: () => { const s = new Set(levels.map(l => l.difficulty)); return s.has(0) && s.has(100); } },
+            { id: 41, name: "Precision", desc: "Two levels with same difficulty and points", check: () => { for (let i = 0; i < levels.length; i++) for (let j = i + 1; j < levels.length; j++) if (levels[i].difficulty === levels[j].difficulty && levels[i].number === levels[j].number) return true; return false; } },
+            { id: 42, name: "The Gap", desc: "50+ difficulty gap between #1 and #2", check: () => { const s = getSorted(levels); return s.length >= 2 && s[0].difficulty - s[1].difficulty >= 50; } },
+            { id: 43, name: "Balanced", desc: "Top 5 within 10 difficulty of each other", check: () => { const s = getSorted(levels); return s.length >= 5 && s[0].difficulty - s[4].difficulty <= 10; } },
+            { id: 44, name: "Moving Up", desc: "Level rose 5+ positions after edit", check: () => historyLog.some(h => h.type === 'up' && h.positions >= 5) },
+            { id: 45, name: "Free Fall", desc: "Level dropped 10+ positions after edit", check: () => historyLog.some(h => h.type === 'down' && h.positions >= 10) },
+            { id: 46, name: "Pocket Change", desc: "Earn 1.00 total points", check: () => totalPoints >= 1 },
+            { id: 47, name: "Small Fortune", desc: "Earn 10.00 total points", check: () => totalPoints >= 10 },
+            { id: 48, name: "Rich", desc: "Earn 50.00 total points", check: () => totalPoints >= 50 },
+            { id: 49, name: "Wealthy", desc: "Earn 100.00 total points", check: () => totalPoints >= 100 },
+            { id: 50, name: "Millionaire", desc: "Earn 500.00 total points", check: () => totalPoints >= 500 },
+            { id: 51, name: "Billionaire", desc: "Earn 1000.00 total points", check: () => totalPoints >= 1000 },
+            { id: 52, name: "Big Payout", desc: "Complete a level worth 5.00+", check: () => levels.filter(l => completedIds.includes(l.id) && l.number >= 5).length > 0 },
+            { id: 53, name: "Jackpot", desc: "Complete a level worth 10.00+", check: () => levels.filter(l => completedIds.includes(l.id) && l.number >= 10).length > 0 },
+            { id: 54, name: "Lottery", desc: "Complete a level worth 25.00+", check: () => levels.filter(l => completedIds.includes(l.id) && l.number >= 25).length > 0 },
+            { id: 55, name: "Micro Manager", desc: "Add a level with exactly 0.01 points", check: () => levels.some(l => l.number === 0.01) },
+            { id: 56, name: "Meme Number", desc: "Add a level with exactly 0.69 points", check: () => levels.some(l => l.number === 0.69) },
+            { id: 57, name: "Perfect Fraction", desc: "Add a level with exactly 0.33 points", check: () => levels.some(l => l.number === 0.33) },
+            { id: 58, name: "Lucky Streak", desc: "Have total points equal to 7.77", check: () => Math.abs(totalPoints - 7.77) < 0.005 },
+            { id: 59, name: "Decimal Enjoyer", desc: "Add 10 levels with fractional points", check: () => levels.filter(l => l.number % 1 !== 0).length >= 10 },
+            { id: 60, name: "Round Number", desc: "Have exactly 100.00 total points", check: () => Math.abs(totalPoints - 100) < 0.005 },
+            { id: 61, name: "Tag Novice", desc: "Use your first tag", check: () => Object.keys(levelTags).length > 0 },
+            { id: 62, name: "Tag Collector", desc: "Use 5 different tags", check: () => allTags.length >= 5 },
+            { id: 63, name: "Tag Master", desc: "Use 10 different tags", check: () => allTags.length >= 10 },
+            { id: 64, name: "Tag Hoarder", desc: "Use 20 different tags", check: () => allTags.length >= 20 },
+            { id: 65, name: "Tag Specialist", desc: "5+ levels with the same tag", check: () => countMaxTag() >= 5 },
+            { id: 66, name: "Tag Expert", desc: "10+ levels with the same tag", check: () => countMaxTag() >= 10 },
+            { id: 67, name: "Tag Dominator", desc: "25+ levels with the same tag", check: () => countMaxTag() >= 25 },
+            { id: 68, name: "Diverse", desc: "Complete levels with 3+ different tags", check: () => countCompletedTags() >= 3 },
+            { id: 69, name: "Well Rounded", desc: "Complete levels with 5+ different tags", check: () => countCompletedTags() >= 5 },
+            { id: 70, name: "Jack of All Trades", desc: "Complete levels with 10+ different tags", check: () => countCompletedTags() >= 10 },
+            { id: 71, name: "Legacy Created", desc: "First legacy snapshot saved", check: () => legacyLevels.length > 0 },
+            { id: 72, name: "History Keeper", desc: "Have 2 legacy snapshots", check: () => (achStats.legacyCount || 0) >= 2 },
+            { id: 73, name: "Time Traveler", desc: "Have 5 legacy snapshots", check: () => (achStats.legacyCount || 0) >= 5 },
+            { id: 74, name: "Ancient One", desc: "Have 10 legacy snapshots", check: () => (achStats.legacyCount || 0) >= 10 },
+            { id: 75, name: "Eternal", desc: "Have 18 legacy snapshots (1 year)", check: () => (achStats.legacyCount || 0) >= 18 },
+            { id: 76, name: "Still Standing", desc: "Level stayed #1 through 2 legacy snapshots", check: () => (achStats.sameTop1 || 0) >= 2 },
+            { id: 77, name: "Unshakable", desc: "Level stayed #1 through 5 legacy snapshots", check: () => (achStats.sameTop1 || 0) >= 5 },
+            { id: 78, name: "Immortal", desc: "Level stayed #1 through 10 legacy snapshots", check: () => (achStats.sameTop1 || 0) >= 10 },
+            { id: 79, name: "Comeback", desc: "Level returned to #1 after losing it", check: () => achStats.comeback || false },
+            { id: 80, name: "Legacy Triple", desc: "Same level is Legacy #1, #2, and #3", check: () => { if (legacyLevels.length < 3) return false; const s = getSorted(legacyLevels); return s[0].id === s[1].id && s[1].id === s[2].id; } },
+            { id: 81, name: "Editor", desc: "Edit a level for the first time", check: () => achStats.edited || false },
+            { id: 82, name: "Perfectionist Editor", desc: "Edit the same level 5 times", check: () => { const c = achStats.editCounts || {}; return Object.values(c).some(v => v >= 5); } },
+            { id: 83, name: "Name Changer", desc: "Rename a level", check: () => achStats.renamed || false },
+            { id: 84, name: "Exporter", desc: "Export your data", check: () => achStats.exported || false },
+            { id: 85, name: "Importer", desc: "Import data", check: () => achStats.imported || false },
+            { id: 86, name: "Back And Forth", desc: "Export and import the same data", check: () => achStats.exported && achStats.imported },
+            { id: 87, name: "Copycat", desc: "Copy the top list", check: () => achStats.copiedList || false },
+            { id: 88, name: "Profile Shared", desc: "Copy your profile", check: () => achStats.copiedProfile || false },
+            { id: 89, name: "Searcher", desc: "Use search", check: () => achStats.searched || false },
+            { id: 90, name: "Legacy Browser", desc: "View legacy list 10 times", check: () => (achStats.legacyViews || 0) >= 10 },
+            { id: 91, name: "Profile Viewer", desc: "View profile 20 times", check: () => (achStats.profileViews || 0) >= 20 },
+            { id: 92, name: "Data Hoarder", desc: "More than 50KB of data", check: () => new Blob([JSON.stringify(localStorage)]).size > 50 * 1024 },
+            { id: 93, name: "Data King", desc: "More than 200KB of data", check: () => new Blob([JSON.stringify(localStorage)]).size > 200 * 1024 },
+            { id: 94, name: "OG", desc: "Data migrated from version 2.0", check: () => localStorage.getItem(SK.migrated) === 'true' },
+            { id: 95, name: "Completionist", desc: "Earn all other 94 achievements", check: () => earnedAchievements.filter(id => id !== 95).length >= 94 }
+        ];
+
+        function checkStreak(n) {
+            if (completedIds.length < n) return false;
+            const dates = new Set();
+            completedIds.forEach(id => { const d = new Date(achStats.completedDates?.[id] || 0).toDateString(); dates.add(d); });
+            const arr = [...dates].sort();
+            let max = 0, cur = 1;
+            for (let i = 1; i < arr.length; i++) {
+                if ((new Date(arr[i]) - new Date(arr[i - 1])) / 86400000 === 1) cur++;
+                else { max = Math.max(max, cur); cur = 1; }
+            }
+            return Math.max(max, cur) >= n;
+        }
+
+        function countMaxTag() {
+            const c = {};
+            Object.values(levelTags).forEach(tags => tags.forEach(t => { c[t] = (c[t] || 0) + 1; }));
+            return Math.max(0, ...Object.values(c));
+        }
+
+        function countCompletedTags() {
+            const s = new Set();
+            levels.filter(l => completedIds.includes(l.id)).forEach(l => getTags(l.id).forEach(t => s.add(t)));
+            return s.size;
+        }
+
+        function initAchStats() {
+            if (!achStats.completedDates) achStats.completedDates = {};
+            if (achStats.legacyCount === undefined) achStats.legacyCount = legacyLevels.length > 0 ? 1 : 0;
+            if (achStats.sameTop1 === undefined) achStats.sameTop1 = 0;
+            if (achStats.comeback === undefined) achStats.comeback = false;
+            if (achStats.edited === undefined) achStats.edited = false;
+            if (!achStats.editCounts) achStats.editCounts = {};
+            if (achStats.renamed === undefined) achStats.renamed = false;
+            if (achStats.exported === undefined) achStats.exported = false;
+            if (achStats.imported === undefined) achStats.imported = false;
+            if (achStats.copiedList === undefined) achStats.copiedList = false;
+            if (achStats.copiedProfile === undefined) achStats.copiedProfile = false;
+            if (achStats.searched === undefined) achStats.searched = false;
+            if (achStats.legacyViews === undefined) achStats.legacyViews = 0;
+            if (achStats.profileViews === undefined) achStats.profileViews = 0;
+            saveAll();
+        }
+
+        function checkAchievements() {
+            initAchStats();
+            let changed = false;
+            ACHIEVEMENTS.forEach(ach => {
+                if (!earnedAchievements.includes(ach.id) && ach.check()) {
+                    earnedAchievements.push(ach.id);
+                    changed = true;
+                }
+            });
+            if (changed) saveAll();
+        }
+
+        function trackComplete(id) {
+            if (!achStats.completedDates) achStats.completedDates = {};
+            if (!achStats.completedDates[id]) {
+                achStats.completedDates[id] = Date.now();
+                saveAll();
+            }
+        }
+
+        function trackEdit(levelId, newName) {
+            achStats.edited = true;
+            if (!achStats.editCounts) achStats.editCounts = {};
+            achStats.editCounts[levelId] = (achStats.editCounts[levelId] || 0) + 1;
+            if (newName) achStats.renamed = true;
+            saveAll();
+            checkAchievements();
+        }
+        function trackExport() { achStats.exported = true; saveAll(); checkAchievements(); }
+        function trackImport() { achStats.imported = true; saveAll(); checkAchievements(); }
+        function trackCopyList() { achStats.copiedList = true; saveAll(); checkAchievements(); }
+        function trackCopyProfile() { achStats.copiedProfile = true; saveAll(); checkAchievements(); }
+        function trackSearch() { achStats.searched = true; saveAll(); checkAchievements(); }
+        function trackLegacyView() { achStats.legacyViews = (achStats.legacyViews || 0) + 1; saveAll(); checkAchievements(); }
+        function trackProfileView() { achStats.profileViews = (achStats.profileViews || 0) + 1; saveAll(); checkAchievements(); }
+
+        initAchStats();
+
+        // ====== DOM ======
+        const $ = id => document.getElementById(id);
+        const levelList = $('levelList'), emptyState = $('emptyState'), pointsDisplay = $('pointsDisplay');
+        const avatarBtn = $('avatarBtn'), addBtn = $('addBtn'), copyBtn = $('copyBtn'), copyTooltip = $('copyTooltip');
+        const modalOverlay = $('modalOverlay'), modalTitle = $('modalTitle'), levelNameInput = $('levelNameInput');
+        const levelDifficultyInput = $('levelDifficultyInput'), levelNumberInput = $('levelNumberInput');
+        const levelTagsInput = $('levelTagsInput'), tagSuggestions = $('tagSuggestions');
+        const rangeDisplay = $('rangeDisplay'), rangeValue = $('rangeValue'), modalCancel = $('modalCancel'), modalOk = $('modalOk');
+        const profilePage = $('profilePage'), backBtn = $('backBtn'), profileNameInput = $('profileNameInput');
+        const profileAvatar = $('profileAvatar'), profileTotalPoints = $('profileTotalPoints');
+        const profileCompletedCount = $('profileCompletedCount'), profileCompletedList = $('profileCompletedList');
+        const profilePoints = $('profilePoints'), levelCount = $('levelCount'), app = $('app'), bottomBar = $('bottomBar');
+        const searchInput = $('searchInput'), tabBtns = document.querySelectorAll('.tab-btn');
+        const listHeaderLabel = $('listHeaderLabel'), legacyDateEl = $('legacyDate');
+        const exportBtn = $('exportBtn'), importBtn = $('importBtn'), importFileInput = $('importFileInput');
+        const copyProfileBtn = $('copyProfileBtn'), radarCanvas = $('radarCanvas'), radarLegend = $('radarLegend');
+        const radarContainer = $('radarContainer'), radarEmpty = $('radarEmpty');
+        const achGrid = $('achGrid'), profileAchCount = $('profileAchCount');
+
+        let currentTab = 'list', editingLevelId = null;
+
+        // ====== TAG SUGGESTIONS ======
+        levelTagsInput.addEventListener('input', function() {
+            const v = this.value, li = v.lastIndexOf(','), after = li >= 0 ? v.substring(li + 1).trim() : v.trim();
+            const parts = v.split(',').map(p => p.trim().toLowerCase());
+            if (!after) { tagSuggestions.classList.remove('show'); return; }
+            const used = new Set(parts.filter(p => p));
+            const filtered = allTags.filter(t => t.startsWith(after.toLowerCase()) && !used.has(t));
+            if (!filtered.length) { tagSuggestions.classList.remove('show'); return; }
+            tagSuggestions.innerHTML = '';
+            filtered.slice(0, 6).forEach(tag => {
+                const el = document.createElement('div');
+                el.className = 'tag-suggestion-item';
+                el.textContent = tag;
+                el.addEventListener('mousedown', e => {
+                    e.preventDefault();
+                    const np = parts.slice(0, -1);
+                    np.push(tag);
+                    levelTagsInput.value = np.join(', ') + ', ';
+                    tagSuggestions.classList.remove('show');
+                    levelTagsInput.focus();
+                });
+                tagSuggestions.appendChild(el);
+            });
+            tagSuggestions.classList.add('show');
+        });
+        levelTagsInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && tagSuggestions.classList.contains('show')) {
+                e.preventDefault();
+                const f = tagSuggestions.querySelector('.tag-suggestion-item');
+                if (f) f.click();
+            }
+        });
+        document.addEventListener('click', e => {
+            if (!levelTagsInput.contains(e.target) && !tagSuggestions.contains(e.target)) tagSuggestions.classList.remove('show');
+        });
+
+        // ====== TABS ======
+        tabBtns.forEach(btn => btn.addEventListener('click', function() {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentTab = this.dataset.tab;
+            if (currentTab === 'legacy') {
+                bottomBar.style.display = 'none';
+                listHeaderLabel.textContent = 'Legacy List';
+                if (legacyDate) {
+                    const d = new Date(legacyDate);
+                    legacyDateEl.style.display = 'block';
+                    legacyDateEl.textContent = 'Snapshot from: ' + d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                } else {
+                    legacyDateEl.style.display = 'block';
+                    legacyDateEl.textContent = 'No legacy data yet';
+                }
+                trackLegacyView();
+            } else {
+                bottomBar.style.display = 'flex';
+                listHeaderLabel.textContent = 'Levels';
+                legacyDateEl.style.display = 'none';
+            }
+            renderLevels();
+        }));
+        searchInput.addEventListener('input', () => { trackSearch(); renderLevels(); });
+
+        // ====== COPY LIST ======
+        copyBtn.addEventListener('click', () => {
+            const src = currentTab === 'legacy' ? legacyLevels : levels;
+            if (!src.length) return;
+            const sorted = getSorted(src);
+            let txt = '';
+            sorted.forEach((l, i) => {
+                const t = getTags(l.id);
+                txt += `${i + 1}. ${l.name} — difficulty: ${l.difficulty}, points: ${formatPoints(l.number)}${t.length ? ' | ' + t.join(', ') : ''}\n`;
+            });
+            const fallback = () => {
+                const ta = document.createElement('textarea');
+                ta.value = txt.trim();
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                copyTooltip.classList.add('show');
+                setTimeout(() => copyTooltip.classList.remove('show'), 1500);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(txt.trim()).then(() => {
+                    copyTooltip.classList.add('show');
+                    setTimeout(() => copyTooltip.classList.remove('show'), 1500);
+                }).catch(fallback);
+            } else {
+                fallback();
+            }
+            trackCopyList();
+        });
+
+        // ====== RENDER LEVELS ======
+        function renderLevels() {
+            levelList.innerHTML = '';
+            const src = currentTab === 'legacy' ? legacyLevels : levels;
+            const q = searchInput.value.trim().toLowerCase();
+
+            if (!src.length) {
+                emptyState.style.display = 'block';
+                levelList.style.display = 'none';
+                levelCount.textContent = '0';
+            } else {
+                const sorted = getSorted(src);
+                let filtered = q ? sorted.filter(l => l.name.toLowerCase().includes(q) || getTags(l.id).some(t => t.includes(q))) : sorted;
+                if (!filtered.length) {
+                    emptyState.style.display = 'block';
+                    emptyState.textContent = q ? 'Nothing found' : (currentTab === 'legacy' ? 'No legacy data yet' : 'List is empty');
+                    levelList.style.display = 'none';
+                    levelCount.textContent = '0';
+                } else {
+                    emptyState.style.display = 'none';
+                    levelList.style.display = 'flex';
+                    levelCount.textContent = filtered.length;
+
+                    filtered.forEach((l, i) => {
+                        const isDone = completedIds.includes(l.id);
+                        const rank = i + 1;
+                        const card = document.createElement('div');
+                        card.className = 'level-card';
+                        if (rank === 1) card.classList.add('top-1');
+                        if (rank === 2) card.classList.add('top-2');
+                        if (rank === 3) card.classList.add('top-3');
+
+                        let legHTML = '';
+                        if (currentTab === 'list') {
+                            const ls = getSorted(legacyLevels);
+                            const li = ls.findIndex(x => x.id === l.id);
+                            if (li === 0) legHTML = '<span class="legacy-badge legacy-1">Legacy #1</span>';
+                            else if (li === 1) legHTML = '<span class="legacy-badge legacy-2">Legacy #2</span>';
+                            else if (li === 2) legHTML = '<span class="legacy-badge legacy-3">Legacy #3</span>';
+                        }
+
+                        let histHTML = '';
+                        if (currentTab === 'list') {
+                            const h = getHistory(l.id);
+                            if (h) {
+                                if (h.type === 'up') histHTML = `<span class="history-badge up">↑${h.positions}</span>`;
+                                else if (h.type === 'down') histHTML = `<span class="history-badge down">↓${h.positions}</span>`;
+                                else if (h.type === 'new') histHTML = '<span class="history-badge new">New</span>';
+                            }
+                        }
+
+                        const tags = getTags(l.id);
+                        const tagsHTML = tags.length ? '<div class="level-tags">' + tags.map(t => `<span class="level-tag">${escapeHTML(t)}</span>`).join('') + '</div>' : '';
+
+                        card.innerHTML = `
+                            <span class="level-rank">#${rank}</span>
+                            <div class="level-info">
+                                <div class="level-name-row">
+                                    <span class="level-name">${escapeHTML(l.name)}</span>
+                                    ${legHTML}${histHTML}
+                                </div>
+                                ${tagsHTML}
+                                <div class="level-details">
+                                    points: <strong>${formatPoints(l.number)}</strong> &middot; difficulty: <strong>${l.difficulty}</strong>
+                                </div>
+                                <div class="level-difficulty-bar">
+                                    <div class="level-difficulty-fill" style="width:${l.difficulty}%"></div>
+                                </div>
+                            </div>
+                            ${currentTab === 'list' ? `
+                            <div class="level-actions">
+                                <button class="edit-btn" data-id="${l.id}">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                                </button>
+                                <button class="complete-btn ${isDone ? 'completed' : ''}" data-id="${l.id}">✓</button>
+                                <button class="delete-btn" data-id="${l.id}">×</button>
+                            </div>` : ''}
+                        `;
+
+                        if (currentTab === 'list') {
+                            card.querySelector('.edit-btn').addEventListener('click', e => { e.stopPropagation(); openEdit(l); });
+                            card.querySelector('.complete-btn').addEventListener('click', e => {
+                                e.stopPropagation();
+                                if (!completedIds.includes(l.id)) {
+                                    completedIds.push(l.id);
+                                    totalPoints += l.number;
+                                    trackComplete(l.id);
+                                    saveAll();
+                                    checkAchievements();
+                                    updateUI();
+                                    renderLevels();
+                                }
+                            });
+                            card.querySelector('.delete-btn').addEventListener('click', e => {
+                                e.stopPropagation();
+                                if (completedIds.includes(l.id)) {
+                                    totalPoints -= l.number;
+                                    if (totalPoints < 0) totalPoints = 0;
+                                    completedIds = completedIds.filter(id => id !== l.id);
+                                }
+                                levels = levels.filter(x => x.id !== l.id);
+                                removeTags(l.id);
+                                saveAll();
+                                computeHistory(getSorted(levels).map(x => x.id));
+                                checkAchievements();
+                                updateUI();
+                                renderLevels();
+                            });
+                        }
+
+                        levelList.appendChild(card);
+                    });
+                }
+            }
+            updateUI();
+        }
+
+        function escapeHTML(s) {
+            const d = document.createElement('div');
+            d.textContent = s;
+            return d.innerHTML;
+        }
+
+        function updateUI() {
+            pointsDisplay.textContent = formatPoints(totalPoints);
+            profilePoints.textContent = formatPoints(totalPoints);
+            profileTotalPoints.textContent = formatPoints(totalPoints);
+            profileCompletedCount.textContent = completedIds.length;
+            avatarBtn.textContent = profileName.charAt(0).toUpperCase();
+            profileAvatar.textContent = profileName.charAt(0).toUpperCase();
+            profileNameInput.value = profileName;
+            levelCount.textContent = currentTab === 'legacy' ? legacyLevels.length : levels.length;
+            profileAchCount.textContent = earnedAchievements.length + '/95';
+        }
+
+        // ====== PROFILE RENDERS ======
+        function renderProfileCompleted() {
+            profileCompletedList.innerHTML = '';
+            if (!completedIds.length) {
+                profileCompletedList.innerHTML = '<p style="color:var(--sub);font-size:12px;padding:8px 0">Nothing yet</p>';
+                return;
+            }
+            const as = getSorted(levels);
+            completedIds.slice().reverse().forEach(id => {
+                const l = levels.find(x => x.id === id);
+                if (!l) return;
+                const rank = as.findIndex(x => x.id === id) + 1;
+                const t = getTags(l.id);
+                const el = document.createElement('div');
+                el.className = 'profile-completed-item';
+                el.innerHTML = `<span class="profile-completed-dot"></span> #${rank} ${escapeHTML(l.name)} — diff: ${l.difficulty}, pts: ${formatPoints(l.number)}${t.length ? ' | ' + t.join(', ') : ''}`;
+                profileCompletedList.appendChild(el);
+            });
+        }
+
+        function renderAchievements() {
+            achGrid.innerHTML = '';
+            ACHIEVEMENTS.forEach(ach => {
+                const earned = earnedAchievements.includes(ach.id);
+                const el = document.createElement('div');
+                el.className = 'ach-card ' + (earned ? 'earned' : 'locked');
+                el.innerHTML = `<div class="ach-icon">${earned ? '✓' : '?'}</div><div class="ach-info"><div class="ach-name">${ach.name}</div><div class="ach-desc">${ach.desc}</div></div>`;
+                achGrid.appendChild(el);
+            });
+            profileAchCount.textContent = earnedAchievements.length + '/95';
+        }
+
+        // ====== RADAR CHART ======
+        function drawRadar() {
+            const ctx = radarCanvas.getContext('2d');
+            const done = levels.filter(l => completedIds.includes(l.id));
+            if (!done.length) { radarContainer.style.display = 'none'; radarEmpty.style.display = 'block'; return; }
+
+            const stats = {};
+            done.forEach(l => getTags(l.id).forEach(t => { if (!stats[t]) stats[t] = { total: 0, count: 0 }; stats[t].total += l.difficulty; stats[t].count++; }));
+            const names = Object.keys(stats);
+            if (names.length < 2) {
+                radarContainer.style.display = 'none';
+                radarEmpty.style.display = 'block';
+                radarEmpty.textContent = 'Need at least 2 tags to show radar chart';
+                return;
+            }
+
+            const display = names.slice(0, 20);
+            const num = display.length + 1;
+            const ovTotal = done.reduce((s, l) => s + l.difficulty, 0);
+            const ovCount = done.length;
+            const allVals = [...display.map(t => stats[t].total), ovTotal];
+            const maxV = Math.max(...allVals, 1);
+
+            radarContainer.style.display = 'flex';
+            radarEmpty.style.display = 'none';
+
+            const sz = 280, cx = sz / 2, cy = sz / 2, r = 100;
+            ctx.clearRect(0, 0, sz, sz);
+
+            for (let ri = 1; ri <= 4; ri++) {
+                ctx.beginPath();
+                for (let i = 0; i < num; i++) { const a = Math.PI * 2 / num * i - Math.PI / 2; const x = cx + r * (ri / 4) * Math.cos(a); const y = cy + r * (ri / 4) * Math.sin(a); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+                ctx.closePath(); ctx.strokeStyle = '#252525'; ctx.lineWidth = 0.5; ctx.stroke();
+            }
+            for (let i = 0; i < num; i++) { const a = Math.PI * 2 / num * i - Math.PI / 2; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a)); ctx.strokeStyle = '#333'; ctx.lineWidth = 1; ctx.stroke(); }
+
+            const cols = ['#c9a94e', '#b0b0b0', '#b8764a', '#89b4fa', '#a6e3a1', '#fab387', '#f38ba8', '#cba6f7', '#94e2d5', '#f9e2af', '#74c7ec', '#f5c2e7', '#a6adc8', '#eba0ac', '#89dceb', '#b4befe', '#f5e0dc', '#a6e3a1', '#89b4fa', '#c9a94e'];
+            ctx.beginPath();
+            for (let i = 0; i < num; i++) {
+                const val = i < display.length ? stats[display[i]].total : ovTotal;
+                const ratio = val / maxV;
+                const a = Math.PI * 2 / num * i - Math.PI / 2;
+                const x = cx + r * ratio * Math.cos(a), y = cy + r * ratio * Math.sin(a);
+                i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+            }
+            ctx.closePath(); ctx.fillStyle = 'rgba(77,168,218,0.2)'; ctx.fill(); ctx.strokeStyle = '#4da8da'; ctx.lineWidth = 2; ctx.stroke();
+
+            for (let i = 0; i < num; i++) {
+                const val = i < display.length ? stats[display[i]].total : ovTotal;
+                const ratio = val / maxV;
+                const a = Math.PI * 2 / num * i - Math.PI / 2;
+                const x = cx + r * ratio * Math.cos(a), y = cy + r * ratio * Math.sin(a);
+                ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fillStyle = i < display.length ? cols[i % cols.length] : '#4da8da'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1; ctx.stroke();
+            }
+
+            const fs = num > 12 ? 8 : (num > 8 ? 9 : 10);
+            ctx.font = fs + "px 'Segoe UI', sans-serif"; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            for (let i = 0; i < num; i++) {
+                const a = Math.PI * 2 / num * i - Math.PI / 2, lr = r + 22, x = cx + lr * Math.cos(a), y = cy + lr * Math.sin(a);
+                ctx.fillStyle = i < display.length ? cols[i % cols.length] : '#4da8da';
+                ctx.fillText(i < display.length ? display[i] : 'Overall', x, y);
+            }
+
+            radarLegend.innerHTML = '';
+            display.forEach((t, i) => { const d = document.createElement('div'); d.className = 'radar-legend-item'; d.innerHTML = `<span class="radar-legend-dot" style="background:${cols[i % cols.length]}"></span> ${t} — ${stats[t].total} (${stats[t].count})`; radarLegend.appendChild(d); });
+            const od = document.createElement('div'); od.className = 'radar-legend-item'; od.innerHTML = '<span class="radar-legend-dot overall"></span> Overall — ' + ovTotal + ' (' + ovCount + ')'; radarLegend.appendChild(od);
+        }
+
+        // ====== MODAL ======
+        levelDifficultyInput.addEventListener('input', () => { rangeDisplay.textContent = levelDifficultyInput.value; rangeValue.textContent = levelDifficultyInput.value; });
+
+        function openAdd() {
+            editingLevelId = null;
+            modalTitle.textContent = 'New Level';
+            levelNameInput.value = '';
+            levelDifficultyInput.value = 50;
+            levelNumberInput.value = '';
+            levelTagsInput.value = '';
+            rangeDisplay.textContent = '50';
+            rangeValue.textContent = '50';
+            modalOk.textContent = 'OK';
+            tagSuggestions.classList.remove('show');
+            modalOverlay.classList.add('active');
+            setTimeout(() => levelNameInput.focus(), 100);
+        }
+
+        function openEdit(l) {
+            editingLevelId = l.id;
+            modalTitle.textContent = 'Edit Level';
+            levelNameInput.value = l.name;
+            levelDifficultyInput.value = l.difficulty;
+            levelNumberInput.value = l.number;
+            levelTagsInput.value = getTags(l.id).join(', ');
+            rangeDisplay.textContent = l.difficulty;
+            rangeValue.textContent = l.difficulty;
+            modalOk.textContent = 'Save';
+            tagSuggestions.classList.remove('show');
+            modalOverlay.classList.add('active');
+            setTimeout(() => levelNameInput.focus(), 100);
+        }
+
+        addBtn.addEventListener('click', openAdd);
+        modalCancel.addEventListener('click', () => { modalOverlay.classList.remove('active'); editingLevelId = null; });
+        modalOverlay.addEventListener('click', e => { if (e.target === modalOverlay) { modalOverlay.classList.remove('active'); editingLevelId = null; } });
+
+        modalOk.addEventListener('click', () => {
+            const name = levelNameInput.value.trim();
+            const diff = parseInt(levelDifficultyInput.value);
+            const numS = levelNumberInput.value.trim().replace(',', '.');
+            const tagsS = levelTagsInput.value.trim();
+            const tags = tagsS ? tagsS.split(',').map(t => t.trim().toLowerCase()).filter(t => t) : [];
+
+            if (!name) { levelNameInput.focus(); return; }
+            const num = parseFloat(numS);
+            if (isNaN(num) || num < 0) { levelNumberInput.focus(); return; }
+
+            if (editingLevelId) {
+                const l = levels.find(x => x.id === editingLevelId);
+                if (l) {
+                    const was = completedIds.includes(l.id);
+                    if (was) totalPoints -= l.number;
+                    const oldName = l.name;
+                    l.name = name;
+                    l.difficulty = diff;
+                    l.number = num;
+                    if (was) { totalPoints += l.number; if (totalPoints < 0) totalPoints = 0; }
+                    setTags(l.id, tags);
+                    trackEdit(l.id, name !== oldName);
+                    saveAll();
+                    computeHistory(getSorted(levels).map(x => x.id));
+                }
+                editingLevelId = null;
+            } else {
+                const l = { id: Date.now().toString(), name, difficulty: diff, number: num };
+                levels.push(l);
+                setTags(l.id, tags);
+                saveAll();
+                computeHistory(getSorted(levels).map(x => x.id));
+            }
+
+            modalOverlay.classList.remove('active');
+            checkAchievements();
+            renderLevels();
+        });
+
+        // ====== PROFILE ======
+        avatarBtn.addEventListener('click', () => {
+            profilePage.classList.add('active');
+            app.style.display = 'none';
+            document.querySelector('.tabs').style.display = 'none';
+            document.querySelector('.search-wrapper').style.display = 'none';
+            bottomBar.style.display = 'none';
+            renderProfileCompleted();
+            drawRadar();
+            renderAchievements();
+            trackProfileView();
+            updateUI();
+        });
+
+        backBtn.addEventListener('click', () => {
+            profilePage.classList.remove('active');
+            app.style.display = 'block';
+            document.querySelector('.tabs').style.display = 'flex';
+            document.querySelector('.search-wrapper').style.display = 'block';
+            if (currentTab === 'list') bottomBar.style.display = 'flex';
+            renderLevels();
+        });
+
+        profileNameInput.addEventListener('input', () => { profileName = profileNameInput.value || 'Uruman'; saveAll(); updateUI(); });
+
+        // ====== COPY PROFILE ======
+        copyProfileBtn.addEventListener('click', () => {
+            let t = `Profile: ${profileName}\nPoints: ${formatPoints(totalPoints)}\nCompleted: ${completedIds.length} levels\nAchievements: ${earnedAchievements.length}/95\n\n`;
+
+            const done = levels.filter(l => completedIds.includes(l.id));
+            const stats = {};
+            done.forEach(l => getTags(l.id).forEach(tg => { if (!stats[tg]) stats[tg] = { total: 0, count: 0 }; stats[tg].total += l.difficulty; stats[tg].count++; }));
+            t += 'Skill Set:\n';
+            Object.keys(stats).sort((a, b) => stats[b].total - stats[a].total).forEach(tg => t += `${tg} — ${stats[tg].total} (${stats[tg].count})\n`);
+            t += `Overall — ${done.reduce((s, l) => s + l.difficulty, 0)} (${done.length})\n\n`;
+
+            t += 'Completed Levels:\n';
+            const as = getSorted(levels);
+            completedIds.slice().reverse().forEach(id => {
+                const l = levels.find(x => x.id === id);
+                if (l) {
+                    const r = as.findIndex(x => x.id === id) + 1;
+                    const tgs = getTags(l.id);
+                    t += `#${r} ${l.name} — diff: ${l.difficulty}, pts: ${formatPoints(l.number)}${tgs.length ? ' | ' + tgs.join(', ') : ''}\n`;
+                }
+            });
+
+            t += '\nAchievements:\n';
+            ACHIEVEMENTS.forEach(a => t += `${earnedAchievements.includes(a.id) ? '✓' : '✗'} ${a.name}\n`);
+
+            const fb = () => { const ta = document.createElement('textarea'); ta.value = t.trim(); document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); alert('Profile copied!'); };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(t.trim()).then(() => alert('Profile copied!')).catch(fb);
+            } else { fb(); }
+            trackCopyProfile();
+        });
+
+        // ====== EXPORT / IMPORT ======
+        exportBtn.addEventListener('click', () => {
+            const d = { levels, totalPoints, completedIds, profileName, legacyLevels, legacyDate, historyLog, prevSortedIds, allTags, levelTags, earnedAchievements, achStats, version: 3.2 };
+            const j = JSON.stringify(d, null, 2);
+            const bl = new Blob([j], { type: 'application/json' });
+            const u = URL.createObjectURL(bl);
+            const a = document.createElement('a');
+            a.href = u; a.download = 'pointer-made-backup.json';
+            document.body.appendChild(a); a.click();
+            document.body.removeChild(a); URL.revokeObjectURL(u);
+            trackExport();
+        });
+
+        importBtn.addEventListener('click', () => importFileInput.click());
+        importFileInput.addEventListener('change', function() {
+            const f = importFileInput.files[0];
+            if (!f) return;
+            if (!confirm('Import will replace all current data. Continue?')) { importFileInput.value = ''; return; }
+            const r = new FileReader();
+            r.onload = function(e) {
+                try {
+                    const d = JSON.parse(e.target.result);
+                    if (d.version !== 3 && d.version !== 3.1 && d.version !== 3.2) { alert('Incompatible file.'); importFileInput.value = ''; return; }
+                    levels = d.levels || [];
+                    totalPoints = parseFloat(d.totalPoints) || 0;
+                    completedIds = d.completedIds || [];
+                    profileName = d.profileName || 'Uruman';
+                    legacyLevels = d.legacyLevels || [];
+                    legacyDate = d.legacyDate || '';
+                    historyLog = d.historyLog || [];
+                    prevSortedIds = d.prevSortedIds || [];
+                    allTags = d.allTags || [];
+                    levelTags = d.levelTags || {};
+                    earnedAchievements = d.earnedAchievements || [];
+                    achStats = d.achStats || {};
+                    saveAll();
+                    initAchStats();
+                    checkAchievements();
+                    alert('Imported!');
+                    location.reload();
+                } catch (err) { alert('Error: ' + err.message); }
+                importFileInput.value = '';
+            };
+            r.readAsText(f);
+            trackImport();
+        });
+
+        // ====== KEYBOARD ======
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                if (modalOverlay.classList.contains('active')) { modalOverlay.classList.remove('active'); editingLevelId = null; }
+                if (profilePage.classList.contains('active')) backBtn.click();
+            }
+            if (e.key === 'Enter' && modalOverlay.classList.contains('active') && !tagSuggestions.classList.contains('show')) modalOk.click();
+        });
+
+        // ====== INIT ======
+        profileNameInput.value = profileName;
+        checkLegacy();
+        const cs = getSorted(levels).map(l => l.id);
+        if (!prevSortedIds.length) { prevSortedIds = [...cs]; saveAll(); }
+        checkAchievements();
+        renderLevels();
+    </script>
+</body>
+</html>
